@@ -33,7 +33,7 @@ public class FatherView extends LinearLayout {
         //        textView.setBackgroundColor(Color.RED);
         textView.setText(s);
         textView.setTextSize(20);
-        mPaint.setTextSize(20);
+        mPaint.setTextSize(textView.getTextSize());
         mLen = (int) mPaint.measureText(s);
         addView(textView, 100, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
@@ -42,6 +42,6 @@ public class FatherView extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         mPaint.setColor(Color.BLUE);
-        canvas.drawLine(10,10,mLen+10,10,mPaint);
+        canvas.drawLine(0,0,mLen,0,mPaint);
     }
 }

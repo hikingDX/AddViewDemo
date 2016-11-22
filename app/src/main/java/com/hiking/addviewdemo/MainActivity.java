@@ -72,15 +72,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fatherView.addViewWithName(mProvinceDatas[1]);
-                fatherView.addViewWithName(mProvinceDatas[2]);
-                fatherView.addViewWithName("川大学哔哔哔哔哔");
-
+                mFragAdapter.addFrg(Color.RED);
             }
         });
         findViewById(R.id.del).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fatherView.removeViewAt(fatherView.getChildCount()-1);
+                mFragAdapter.UpdateList();
             }
         });
 
@@ -93,15 +92,15 @@ public class MainActivity extends AppCompatActivity {
     }
     private void initFragment() {
         ArrayList<Fragment> fragments = new ArrayList<>();
-        MyFrg myFrg1 = new MyFrg(Color.GREEN);
-        MyFrg myFrg2 = new MyFrg(Color.RED);
-        MyFrg myFrg3 = new MyFrg(Color.YELLOW);
-        fragments.add(myFrg1);
-        fragments.add(myFrg2);
-        fragments.add(myFrg3);
+//        MyFrg myFrg1 = new MyFrg(Color.GREEN);
+//        MyFrg myFrg2 = new MyFrg(Color.RED);
+//        MyFrg myFrg3 = new MyFrg(Color.YELLOW);
+//        fragments.add(myFrg1);
+//        fragments.add(myFrg2);
+//        fragments.add(myFrg3);
 
         mFragAdapter = new FragAdapter(getSupportFragmentManager(), MainActivity.this);
-        mFragAdapter.setLists(fragments);
+//        mFragAdapter.setLists(fragments);
     }
 
     /**

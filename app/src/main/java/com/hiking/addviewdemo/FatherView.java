@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
@@ -20,29 +19,44 @@ public class FatherView extends LinearLayout {
     private Paint mPaint = new Paint();
     private int mLen;
     private ViewPager mViewPager;
+    private FragAdapter mFragAdapter;
     private float mTranslationX;
-    private double prePosition;
 
+    /**
+     * 设置标题
+     */
+    public void setTitle(String title,int position){
+        TextView textView = (TextView) getChildAt(position);
+        textView.setText(title);
+    }
     public FatherView(Context context) {
-        super(context);
-        mContext = context;
+        this(context,null);
     }
 
     public FatherView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
+    }
+
+    /**
+     * 初始化
+     * @param context
+     */
+    private void init(Context context) {
         mContext = context;
+        addViewWithName("请选择");
     }
 
     public void addViewWithName(String s) {
         TextView textView = new TextView(mContext);
-        textView.setBackgroundColor(Color.RED);
+        textView.setTextColor(Color.BLACK);
         textView.setText(s);
         textView.setTextSize(20);
         mPaint.setTextSize(textView.getTextSize());
         mLen = (int) mPaint.measureText(s);
         textView.setPadding(10, 0, 10, 0);
         addView(textView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
+        scroll(getChildCount()-1,0);
     }
 
     @Override
@@ -63,14 +77,11 @@ public class FatherView extends LinearLayout {
         // 不断改变偏移量，invalidate
         //1.获取移动后的标题x值
         if (getChildCount() > 0) {
-//            if (position!= prePosition) {
-                mTranslationX = getChildAt(position).getX();
-                TextView textView = (TextView) getChildAt(position);
-                mPaint.setTextSize(textView.getTextSize());
-                mLen = (int) mPaint.measureText(textView.getText().toString());
-                invalidate();
-                prePosition = position;
-//            }
+            mTranslationX = getChildAt(position).getX();
+            TextView textView = (TextView) getChildAt(position);
+            mPaint.setTextSize(textView.getTextSize());
+            mLen = (int) mPaint.measureText(textView.getText().toString());
+            invalidate();
         }
     }
 

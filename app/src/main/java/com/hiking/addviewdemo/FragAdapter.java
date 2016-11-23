@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +23,10 @@ import java.util.Map;
  */
 public class FragAdapter extends FragmentStatePagerAdapter {
     private static final String TAG = "MyFragmentPagerAdapter";
-    private static final int CITY = 0;
-    private static final int AREA = 1;
+
+    public FatherView mFatherView;
+    private static final int CITY = 1;
+    private static final int AREA = 2;
 
     private ArrayList<Fragment> mList; //Fragment集合
     private Context mContext;
@@ -43,7 +46,6 @@ public class FragAdapter extends FragmentStatePagerAdapter {
      * key - 市 values - 区s
      */
     private Map<String, String[]> mAreaDatasMap = new HashMap<String, String[]>();
-
     /**
      * 当前省的名称
      */
@@ -68,7 +70,7 @@ public class FragAdapter extends FragmentStatePagerAdapter {
         initJsonData();
         initDatas();
         mList = new ArrayList<Fragment>();
-        MyFrg myFrg = new MyFrg(this, mProvinceDatas);
+        MyFrg myFrg = new MyFrg(this, mProvinceDatas,0);
         mList.add(myFrg);
     }
 
@@ -80,16 +82,19 @@ public class FragAdapter extends FragmentStatePagerAdapter {
     /**
      * 删除Frg
      */
-    public void delFrg() {
-        this.mList.remove(0);
+    public void delFrg(int level) {
+        for (int i=mList.size()-1;i>level;i--){
+            mList.remove(i);
+        }
         notifyDataSetChanged();
     }
 
     /**
      * 添加Frg
      */
-    public void addFrg(String[] arr) {
-        this.mList.add(new MyFrg(this,arr));
+    public void addFrg(String[] arr,int level) {
+        this.mList.add(new MyFrg(this,arr,level));
+        mFatherView.addViewWithName("请选择");
         notifyDataSetChanged();
     }
 
@@ -114,24 +119,32 @@ public class FragAdapter extends FragmentStatePagerAdapter {
     /**
      * --------------------------------------------------------获取数据-----------------------------------------------------
      */
-    public String[] update(int level, String title) {
+    public void update(int level, String title) {
         switch (level){
             case CITY:{
+                //设置上一层级 title
+                mFatherView.setTitle(title,level-1);
+
                 mCurrentProviceName = title;
                 String[] citys = mCitisDatasMap.get(mCurrentProviceName);
-                addFrg(citys);
-                return citys;
+                delFrg(level-1);//删除省级以后的层级
+                addFrg(citys,level);
+                break;
             }
             case AREA:{
+                //设置上一层级 title
+                mFatherView.setTitle(title,level-1);
                 mCurrentCityName = title;
                 String[] areas = mAreaDatasMap.get(mCurrentCityName);
-                addFrg(areas);
-                return areas;
+                delFrg(level-1);
+                if (areas!=null) {
+                    addFrg(areas, level);
+                }
+                break;
             }
             default:
                 break;
         }
-        return null;
     }
 
     /**

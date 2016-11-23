@@ -7,20 +7,9 @@
     android:orientation="vertical"
     tools:context="com.hiking.addviewdemo.MainActivity">
 
-    <Button
-        android:text="Add"
-        android:id="@+id/add"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
-    <Button
-        android:text="Del"
-        android:id="@+id/del"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
 
     <com.hiking.addviewdemo.FatherView
         android:id="@+id/father"
-        android:background="#ff9"
         android:layout_width="match_parent"
         android:layout_height="30dp"></com.hiking.addviewdemo.FatherView>
     <android.support.v4.view.ViewPager

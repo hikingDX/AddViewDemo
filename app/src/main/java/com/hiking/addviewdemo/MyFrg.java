@@ -12,15 +12,11 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.zip.Inflater;
-
-
 /**
  * Created by Administrator on 2016/11/21.
  */
 public class MyFrg extends Fragment {
-    private int level;//层级
+    private int mLevel;//层级
     private FragAdapter mFragAdapter;
 
     private ListView mListView;
@@ -31,9 +27,10 @@ public class MyFrg extends Fragment {
     public MyFrg() {
     }
 
-    public MyFrg(FragAdapter fragAdapter, String[] data) {
+    public MyFrg(FragAdapter fragAdapter, String[] data,int level) {
         mFragAdapter = fragAdapter;
         mData = data;
+        mLevel = level;
     }
 
 
@@ -50,56 +47,39 @@ public class MyFrg extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                 TextView textView = (TextView) view.findViewById(R.id.tv);
-                textView.setTextColor(Color.RED);
-                String title = textView.getText().toString();
-                mFragAdapter.update(level,title);
-//                if (mFragAdapter.) {
-//                    //增加一个Frg 并添加数据源
-//                }
-            }
+textView.setTextColor(Color.RED);
+        String title = textView.getText().toString();
+        mFragAdapter.update(mLevel+1,title);//更新下一层级,如果是省+1就是市
+        }
 
-        });
-        mListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                view.setBackgroundColor(Color.BLUE);
-                TextView textView = (TextView) view.findViewById(R.id.tv);
-                textView.setTextColor(Color.YELLOW);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
         });
         return view;
+        }
+
+public class ListViewAdapter extends BaseAdapter {
+
+    @Override
+    public int getCount() {
+        return mData.length;
     }
 
-    public class ListViewAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mData.length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            view = mLayoutInflater.inflate(R.layout.item, null);
-            TextView textView = (TextView) view.findViewById(R.id.tv);
-            textView.setText(mData[i]);
-            return view;
-        }
+    @Override
+    public Object getItem(int i) {
+        return null;
     }
+
+    @Override
+    public long getItemId(int i) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        view = mLayoutInflater.inflate(R.layout.item, null);
+        TextView textView = (TextView) view.findViewById(R.id.tv);
+        textView.setText(mData[i]);
+        return view;
+    }
+}
 }
